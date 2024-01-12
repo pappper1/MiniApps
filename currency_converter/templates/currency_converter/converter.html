@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-12 col-md-8 col-lg-6">
+            <h1 class="text-center my-4">Конвертер валют</h1>
+            <form class="p-4 border rounded bg-light shadow" id="converterForm">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col-12 col-md-6 form-group">
+                        <select class="form-control" id="fromCurrency" name="from_currency">
+                            <!-- Options will be populated dynamically -->
+                        </select>
+                        <label for="amount" class="mt-3">Сумма:</label>
+                        <input type="number" class="form-control" id="amount" name="amount" step="0.01" min="0">
+                    </div>
+                    <div class="col-12 col-md-6 form-group">
+                        <select class="form-control" id="toCurrency" name="to_currency">
+                            <!-- Options will be populated dynamically -->
+                        </select>
+                        <label for="result" class="mt-3">Результат:</label>
+                        <input type="text" class="form-control" id="result" name="result" readonly>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block mt-4">Конвертировать</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
