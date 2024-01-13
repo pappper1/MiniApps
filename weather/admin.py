@@ -1,3 +1,5 @@
 from django.contrib import admin
+from .models import * # замените на имена ваших моделей
 
-# Register your models here.
+admin.site.register(Country)
+admin.site.register(City)

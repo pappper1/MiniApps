@@ -20,4 +20,5 @@ from django.urls import path, include
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("", include("currency_converter.urls")),
+    path("", include("weather.urls")),
 ]

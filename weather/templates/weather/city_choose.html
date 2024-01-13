@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="text-center my-4">Выбор города</h1>
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <form method="POST">
+                        {% csrf_token %}
+                        <div class="form-group mb-3">
+                            <select class="form-control" name="city" id="city">
+                                {% for city in cities %}
+                                    <option value="{{ city.url }}">{{ city.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <button class="btn btn-outline-secondary btn-block" type="submit">Посмотреть погоду</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

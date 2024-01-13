@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="text-center my-4">Добавить страну</h1>
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <form method="POST">
+                        {% csrf_token %}
+                        <div class="form-group mb-3">
+                            <input type="text" class="form-control" id="country-name" name="country_name" placeholder="Введите название страны" required>
+                        </div>
+                        <button class="btn btn-outline-secondary btn-block" type="submit">Добавить страну</button>
+                    </form>
+                    {% if success %}
+                    <div class="alert alert-success mt-3">
+                        Страна и её города успешно добавлены.
+                    </div>
+                    <div class="alert alert-info mt-3">
+                        <a href="{% url 'weather' %}" class="btn btn-primary btn-block mt-4">Вернуться к списку стран</a>
+                    {% elif error_message %}
+                    <div class="alert alert-danger mt-3">
+                        {{ error_message }}
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

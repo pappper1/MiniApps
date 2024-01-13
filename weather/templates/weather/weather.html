@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="text-center my-4">Прогноз погоды</h1>
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <form method="POST">
+                {% csrf_token %}
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control" placeholder="Введите название страны" name="country" id="country-input">
+                    <div class="dropdown-menu" id="countries">
+                        {% for country in countries %}
+                            <a class="dropdown-item" href="">{{ country }}</a>
+                        {% endfor %}
+                    </div>
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-secondary" id="hide-dropdown">Скрыть</button>
+                    </div>
+                </div>
+            </form>
+            <div class="card text-center my-4 p-3">
+                <p class="h5">Не нашли страну в списке? Вы можете её добавить самостоятельно!</p>
+                <a href="{% url 'add_country' %}" class="btn btn-primary btn-sm">Добавить</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.querySelector('#country-input').addEventListener('input', function(e) {
+    fetch('/weather/get-countries/?query=' + e.target.value)
+        .then(response => response.json())
+        .then(data => {
+            let dropdown = document.querySelector('#countries');
+            dropdown.innerHTML = '';
+            for (let country of data.countries) {
+                let item = document.createElement('a');
+                item.classList.add('dropdown-item');
+                item.href = '#';
+                item.textContent = country;
+                item.addEventListener('click', function() {
+                    window.location.href = '/weather/' + this.textContent.toLowerCase();
+                });
+                dropdown.appendChild(item);
+            }
+            if (data.countries.length === 0) {
+                dropdown.parentElement.classList.remove('show');
+                dropdown.classList.remove('show');
+            } else {
+                dropdown.parentElement.classList.add('show');
+                dropdown.classList.add('show');
+            }
+        });
+});
+
+document.querySelector('#hide-dropdown').addEventListener('click', function() {
+    let dropdown = document.querySelector('#countries');
+    dropdown.parentElement.classList.remove('show');
+    dropdown.classList.remove('show');
+});
+</script>
+{% endblock %}

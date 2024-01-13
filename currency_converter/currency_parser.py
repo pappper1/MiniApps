@@ -4,7 +4,7 @@ from datetime import datetime, timedelta
 
 class CurrencyParser:
     def __init__(self, from_currency: str, to_currency: str):
-        self.end_date = datetime.now().strftime('%Y-%m-%d')
+        self.end_date = (datetime.now() - timedelta(days=1)).strftime('%Y-%m-%d')
         self.start_date = (datetime.now() - timedelta(days=30)).strftime('%Y-%m-%d')
         self.headers =  {
             'sec-ch-ua': '"Not_A Brand";v="8", "Chromium";v="120", "Google Chrome";v="120"',

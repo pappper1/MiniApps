@@ -15,7 +15,7 @@ def get_currencies():
         file_path = os.path.join(settings.BASE_DIR, 'currency_converter', 'static', 'texts', 'currency_list.txt')
         with open(file_path, "r") as file:
             currencies = [currency.strip() for currency in file.readlines()]
-        cache.set('currencies', currencies)
+        cache.set('currencies', currencies, 60)
     return currencies
 
 def index(request):
