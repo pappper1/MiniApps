@@ -7,14 +7,13 @@ from django.shortcuts import render, redirect
 from MiniApps import settings
 from .currency_parser import CurrencyParser
 from .forms import CurrencyForm
+from .models import Currencies
 
 
 def get_currencies():
     currencies = cache.get('currencies')
     if not currencies:
-        file_path = os.path.join(settings.BASE_DIR, 'currency_converter', 'static', 'texts', 'currency_list.txt')
-        with open(file_path, "r") as file:
-            currencies = [currency.strip() for currency in file.readlines()]
+        currencies = Currencies.objects.all()
         cache.set('currencies', currencies, 60)
     return currencies
 

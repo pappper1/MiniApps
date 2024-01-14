@@ -17,7 +17,7 @@ def get_world_countries():
 
 
 def weather(request):
-    countries = Country.objects.all()
+    countries = Country.objects.all().order_by('name')
     if request.method == 'POST':
         country_id = int(request.POST.get('country'))
         return redirect('city_weather', country=country_id)
@@ -26,7 +26,7 @@ def weather(request):
 
 def city_weather(request, country: int):
     country_info = Country.objects.get(id=country)
-    cities = City.objects.filter(country=country_info)
+    cities = City.objects.filter(country=country_info).order_by('name')
     if request.method == 'POST':
         city_id = int(request.POST.get('city'))
         return redirect('weather_info', country=country, city=city_id)
