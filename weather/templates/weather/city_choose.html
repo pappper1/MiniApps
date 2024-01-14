@@ -12,7 +12,7 @@
                         <div class="form-group mb-3">
                             <select class="form-control" name="city" id="city">
                                 {% for city in cities %}
-                                    <option value="{{ city.url }}">{{ city.name }}</option>
+                                    <option value="{{ city.id }}">{{ city.name }}</option>
                                 {% endfor %}
                             </select>
                         </div>

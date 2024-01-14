@@ -16,41 +16,33 @@ def get_world_countries():
     return world_countries
 
 
-def get_countries(request):
-    query = request.GET.get('query', '')
-    countries = cache.get('countries')
-    if not countries:
-        countries = Country.objects.filter(name__icontains=query).values_list('name', flat=True)
-        cache.set('countries', countries, 60)
-    return JsonResponse({'countries': list(countries)})
-
-
 def weather(request):
     countries = Country.objects.all()
+    if request.method == 'POST':
+        country_id = int(request.POST.get('country'))
+        return redirect('city_weather', country=country_id)
     return render(request, 'weather/weather.html', {'countries': countries})
 
 
-def city_weather(request, country):
-    country_info = Country.objects.get(name__iexact=country)
+def city_weather(request, country: int):
+    country_info = Country.objects.get(id=country)
     cities = City.objects.filter(country=country_info)
     if request.method == 'POST':
-        form = CityForm(request.POST)
-        if form.is_valid():
-            city_url = form.cleaned_data["city"]
-            return redirect('weather_info', country=country, city=City.objects.get(url=city_url).name.strip())
+        city_id = int(request.POST.get('city'))
+        return redirect('weather_info', country=country, city=city_id)
 
-    return render(request, 'weather/city_choose.html', {'cities': cities, 'country': country.capitalize()})
+    return render(request, 'weather/city_choose.html', {'cities': cities, 'country': country_info.name.capitalize()})
 
 
-def weather_info(request, country, city):
+def weather_info(request, country: int, city: int):
     parse = WeatherParser()
-    weather_info = parse.get_weather(City.objects.get(name=city).url)
+    weather_info = parse.get_weather(City.objects.get(id=city).url)
     if not weather_info:
         return render(request, 'weather/weather_info.html', {'error_message': 'Не удалось получить информацию о погоде.'})
 
     context = {
-        'country': country.capitalize(),
-        'city': city.capitalize(),
+        'country': Country.objects.get(id=country).name.capitalize(),
+        'city': City.objects.get(id=city).name.capitalize(),
         'weather_info': weather_info,
     }
     return render(request, 'weather/weather_info.html', context)
