@@ -58,6 +58,7 @@ from allauth.core.exceptions import ImmediateHttpResponse
 from allauth.core.internal.http import redirect
 from allauth.decorators import rate_limit
 from allauth.utils import get_form_class, get_request_param
+from currency_converter.models import ProfilePosts
 
 
 INTERNAL_RESET_SESSION_KEY = "_password_reset_key"
@@ -212,8 +213,41 @@ login = LoginView.as_view()
 
 
 def profile(request):
-    return render(request, 'account/profile.html')
+    posts = ProfilePosts.objects.filter(user=request.user)
+    return render(request, 'account/profile.html', {'posts': posts})
 
+
+def delete_post(request, post_id):
+    post = ProfilePosts.objects.get(id=post_id)
+    post.delete()
+    return HttpResponseRedirect(reverse('account_profile'))
+
+
+def edit_post(request, post_id):
+    post = ProfilePosts.objects.get(id=post_id)
+    if request.method == 'POST':
+        title = request.POST.get('title')
+        content = request.POST.get('content')
+        photo = request.FILES.get('photo') if request.FILES.get('photo') else None
+        post.title = title
+        post.content = content
+        post.photo = photo
+        post.save()
+        return HttpResponseRedirect(reverse('account_profile'))
+    # return render(request, 'account/edit_post.html', {'post': post})
+    return render(request, 'currency_converter/error.html')
+
+
+def create_post(request):
+    if request.method == 'POST':
+        title = request.POST.get('title')
+        content = request.POST.get('content')
+        photo = request.FILES.get('photo') if request.FILES.get('photo') else None
+        user = request.user
+        post = ProfilePosts(title=title, content=content, user=user, photo=photo)
+        post.save()
+        return HttpResponseRedirect(reverse('account_profile'))
+    return render(request, 'account/create_post.html')
 
 
 class CloseableSignupMixin(object):

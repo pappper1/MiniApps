@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card my-4">
+                <div class="card-body">
+                    <h5 class="card-title">Добавить пост</h5>
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="title">Заголовок:</label>
+                            <input type="text" id="title" name="title" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="content">Содержание:</label>
+                            <textarea id="content" name="content" class="form-control"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="photo">Фото:</label>
+                            <input type="file" id="photo" name="photo" class="form-control">
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-block" >Добавить</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
