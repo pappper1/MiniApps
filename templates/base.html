@@ -29,17 +29,17 @@
     <ul class="navbar-nav">
       {% if user.is_authenticated %}
           <li class="nav-item">
-           <a class="nav-logo" href="{% url 'index' %}"><img src="{% static 'images/favicon.png' %}" alt="user" width="30" height="30"></a>
+           <a class="nav-logo" href="{% url 'account_profile' %}"><img src="{% static 'images/favicon.png' %}" alt="user" width="30" height="30"></a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="{% url 'index' %}">{{ user.username }}</a>
+          <a class="nav-link" href="{% url 'account_profile' %}">{{ user.username }}</a>
         </li>
       {% else %}
         <li class="nav-item">
-          <a class="nav-link" href="{% url 'index' %}">Войти</a>
+          <a class="nav-link" href="{% url 'account_login' %}">Войти</a>
         </li>
           <li class="nav-item">
-          <a class="nav-link" href="{% url 'index' %}">Зарегистрироваться</a>
+          <a class="nav-link" href="{% url 'account_signup' %}">Зарегистрироваться</a>
         </li>
       {% endif %}
     </ul>

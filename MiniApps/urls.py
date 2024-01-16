@@ -21,4 +21,5 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("", include("currency_converter.urls")),
     path("", include("weather.urls")),
+    path("accounts/", include("account.urls")),
 ]

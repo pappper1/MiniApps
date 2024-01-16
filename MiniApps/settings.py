@@ -45,7 +45,8 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "currency_converter.apps.CurrencyConverterConfig",
     "weather.apps.WeatherConfig",
-    "users.apps.UsersConfig",
+    'allauth',
+    'account.apps.AccountConfig',
 ]
 
 MIDDLEWARE = [
@@ -56,6 +57,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    'allauth.account.middleware.AccountMiddleware'
 ]
 
 ROOT_URLCONF = "MiniApps.urls"
@@ -115,7 +117,16 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
+)
+
 LOGIN_REDIRECT_URL = '/'
+
+ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS = 1
+ACCOUNT_USERNAME_MIN_LENGTH = 4
+EMAIL_BACKEND = 'django.core.mail.backends.dummy.EmailBackend'
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
